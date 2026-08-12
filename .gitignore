@@ -1,0 +1,20 @@
+# CLion and CMake Build Folders
+cmake-build-*/
+.idea/
+larc_system_autogen/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+
+# Compiled Object Files
+*.o
+*.obj
+
+# Executables
+larc_system
+
+
+*.db
+*.sqlite
+.larc_system/
+
