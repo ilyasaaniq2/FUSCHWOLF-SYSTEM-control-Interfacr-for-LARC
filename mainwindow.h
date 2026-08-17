@@ -47,9 +47,8 @@
 #include <QOpcUaUserTokenPolicy>
 #include <QOpcUaPkiConfiguration>
 
-// =======================================================================
-// CERTIFICATE VALIDATION DIALOG
-// =======================================================================
+// CERTIFICATE VALIDATION 
+
 class CertValidationDialog : public QDialog {
     Q_OBJECT
 public:
@@ -106,7 +105,7 @@ private slots:
     void treeItemExpanded(const QModelIndex &index);
     void treeItemClicked(const QModelIndex &index);
 
-    // Operation Mode Multi-Tag Monitor
+    // Operation Mode 
     void onMonitoredValueChanged(QOpcUa::NodeAttributes attr);
     void onSaveSettings();
 
@@ -138,7 +137,7 @@ private:
     QWidget* createHeaderStatusItem(QLabel** dotLabel, QLabel** textLabel, const QString& defaultText, const QString& defaultColor);
     void resetHeaderToNoAvail();
 
-    // OPC UA Core Methods
+    // OPC UA  Methods
     void browseNode(const QString &nodeId, QStandardItem *parentItem);
     void setupMultiNodeMonitoring();
     void setupPkiConfiguration();
@@ -158,7 +157,7 @@ private:
 
     QMqttClient *mqttClient = nullptr;
 
-    // OPC UA GUI Elements
+    // OPC UA GUI 
     QLineEdit *opcEndpointInput = nullptr;
     QPushButton *btnOpcConnect = nullptr;
     QPushButton *btnOpcDisconnect = nullptr;
@@ -167,7 +166,7 @@ private:
     QTableWidget *opcAttributeTable = nullptr;
     QTextEdit *opcLogPanel = nullptr;
 
-    // Top Header Status GUI
+    //  Header Status GUI
     QLabel *hdrPlcDot = nullptr;
     QLabel *hdrPlcText = nullptr;
     QLabel *hdrRailDot = nullptr;
@@ -209,14 +208,14 @@ private:
     QString currentAlertBgHex;
     QString currentAlertTextHex;
 
-    // State Trackers & Watchdogs
+    // State Trackers/Watchdogs
     bool m_isUsbAuthenticated = false;
     bool m_mqttMaintState = false;
     bool m_manualDisconnect = false;
     QString m_currentlyDisplayedNodeId;
     QTimer *reconnectTimer = nullptr;
 
-    // Local Alarm State Trackers
+    // Local Alarm State 
     QMap<QString, bool> m_activeAlarms;
     QMap<QString, bool> m_timedOutAlarms;
 
@@ -225,11 +224,11 @@ private:
     QList<StateMapUI*> m_dynamicTags;
     QPushButton *btnSaveSettings = nullptr;
 
-    // OPC UA Backend Pointers
+    // OPC UA Backend 
     QOpcUaClient *mOpcUaClient = nullptr;
     QOpcUaNode *mActiveNode = nullptr;
 
-    // Core Maps for Configuration
+    // Core Maps Configuration
     QMap<QString, QOpcUaNode*> mMonitoredNodes;
     QMap<QString, OutputStateConfig> mNodeToStateConfigMap;
 };
