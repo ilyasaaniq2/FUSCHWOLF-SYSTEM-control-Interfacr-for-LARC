@@ -9,9 +9,9 @@
 
 constexpr int NodeIdRole = Qt::UserRole + 1;
 
-// =======================================================================
-// CERTIFICATE VALIDATION DIALOG
-// =======================================================================
+
+// CERTIFICATE
+
 CertValidationDialog::CertValidationDialog(const QByteArray &derData, const QString &certFileName, QWidget *parent)
     : QDialog(parent)
 {
@@ -116,9 +116,6 @@ CertValidationDialog::CertValidationDialog(const QByteArray &derData, const QStr
     connect(btnCancel, &QPushButton::clicked, this, &QDialog::reject);
 }
 
-// =======================================================================
-// MAIN WINDOW IMPLEMENTATION
-// =======================================================================
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     initDatabase(); // Spin up Black Box SQL
@@ -145,12 +142,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     connect(systemHealthWatchdog, &QTimer::timeout, this, &MainWindow::kickWatchdog);
     systemHealthWatchdog->start();
 
-    // PLC Watchdog Heartbeat
+    // PLC Heartbeat
     hmiHeartbeatTimer = new QTimer(this);
     hmiHeartbeatTimer->setInterval(1000);
     connect(hmiHeartbeatTimer, &QTimer::timeout, this, &MainWindow::sendHmiHeartbeat);
 
-    // Now safe to build UI
+   
     setupUi();
     setupTheme();
 
@@ -158,7 +155,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
     setToStandby();
 
-    // MQTT Authentication Hook
+    // MQTT Authentication H
     mqttClient = new QMqttClient(this);
     mqttClient->setHostname("127.0.0.1");
     mqttClient->setPort(1883);
@@ -171,7 +168,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     });
     mqttClient->connectToHost();
 
-    // USB Physical Auth Hook
+    // USB  Auth 
     usbWatcher = new QFileSystemWatcher(this);
     QString userDir = QDir::homePath();
     QString runMedia = QString("/run/media/%1").arg(QFileInfo(userDir).fileName());
@@ -213,9 +210,9 @@ MainWindow::~MainWindow() {
     appendLog("SYSTEM SHUTDOWN INITIATED.", false, "SYSTEM");
 }
 
-// =======================================================================
-// SQLITE BLACK BOX ARCHITECTURE
-// =======================================================================
+==
+// SQLITE 
+
 
 void MainWindow::initDatabase() {
     QString pkiDir = QDir::homePath() + "/.larc_system";
@@ -247,7 +244,7 @@ void MainWindow::appendLog(const QString &msg, bool isError, const QString &logT
         }
     }
 
-    // Write to SQLite Black Box
+    
     QSqlQuery query;
     query.prepare("INSERT INTO SystemLogs (type, message) VALUES (?, ?)");
     query.addBindValue(isError ? "ERROR" : logType);
@@ -256,12 +253,12 @@ void MainWindow::appendLog(const QString &msg, bool isError, const QString &logT
 }
 
 void MainWindow::kickWatchdog() {
-    // If main thread freezes, this QTimer stops ticking.
+ 
 }
 
-// ---------------------------------------------------------
+
 // HEARTBEAT WRITERS
-// ---------------------------------------------------------
+
 void MainWindow::sendHmiHeartbeat() {
     if (!mOpcUaClient || mOpcUaClient->state() != QOpcUaClient::ClientState::Connected) return;
     if (activeHeartbeatNode.isEmpty()) return;
@@ -371,9 +368,8 @@ QWidget* MainWindow::createTopHeader() {
     abortBtn->setCursor(Qt::PointingHandCursor);
     layout->addWidget(abortBtn);
 
-    // =========================================================
-    // NEW: EMERGENCY ABORT FIRING LOGIC
-    // =========================================================
+    //  EMERGENCY ABORT 
+   
     connect(abortBtn, &QPushButton::clicked, this, [this]() {
         if (!mOpcUaClient || mOpcUaClient->state() != QOpcUaClient::ClientState::Connected) {
             appendLog("[ERROR] Cannot trigger ABORT: PLC is Offline.", true, "SAFETY");
@@ -390,7 +386,6 @@ QWidget* MainWindow::createTopHeader() {
             }
         }
 
-        // Fire the True bit to the PLC
         if (!abortNodeId.isEmpty()) {
             QOpcUaNode *node = mOpcUaClient->node(abortNodeId);
             if (node) {
@@ -699,9 +694,8 @@ QWidget* MainWindow::createSettingsPage() {
     inputHeartbeatNode = new QLineEdit(view);
     inputHeartbeatNode->setStyleSheet(nodeStyle);
 
-    // =====================================
-    // LOAD HEADERS FROM SQLITE
-    // =====================================
+ 
+    // HEADERS FROM SQLITE
     QSqlQuery qHead("SELECT * FROM HeaderSettings WHERE id = 1");
     if (qHead.next()) {
         inputPlcNode->setText(qHead.value("plcNode").toString());
@@ -754,9 +748,8 @@ QWidget* MainWindow::createSettingsPage() {
     m_tagsFormLayout->setVerticalSpacing(15);
     m_tagsFormLayout->setHorizontalSpacing(20);
 
-    // =====================================
-    // LOAD DYNAMIC TAGS FROM SQLITE
-    // =====================================
+    // DYNAMIC TAGS FROM SQLITE
+   
     QSqlQuery qTags("SELECT * FROM DynamicTags ORDER BY id ASC");
     bool hasTags = false;
     while(qTags.next()) {
@@ -771,7 +764,7 @@ QWidget* MainWindow::createSettingsPage() {
     }
 
     if (!hasTags) {
-        // Factory defaults if SQLite is empty
+       
         addSettingRow("ns=4;i=9", "READY TO LAUNCH", "[ LINK OK ]   [ GPS LOCK ]   [ IMU OK ]", "#E69B00", "#111111");
         addSettingRow("ns=4;i=10", "SYSTEM ARM", "Awaiting physical arm actuation", "#E69B00", "#111111");
         addSettingRow("ns=4;i=11", "SAFETY OFF", "Ordnance / actuation path live — restrict personnel", "#8B0000", "#111111");
