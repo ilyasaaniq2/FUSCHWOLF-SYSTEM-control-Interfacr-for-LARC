@@ -5,7 +5,7 @@ int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
     MainWindow w;
-    // Set standard embedded HMI resolution
+ 
     w.resize(1080, 549);
     w.show();
 
