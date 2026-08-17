@@ -30,6 +30,11 @@ To build and run the LARC HMI, the following toolchain is required:
 * **Qt MQTT** module
 * **SQLite3**
 
+<img width="1334" height="699" alt="Screenshot From 2026-08-10 13-54-07" src="https://github.com/user-attachments/assets/43269219-f2c3-4aba-9729-47572526705c" />
+<img width="1193" height="600" alt="Screenshot From 2026-08-17 18-49-35" src="https://github.com/user-attachments/assets/4808cac4-d63c-43c3-9628-5beac880dd19" />
+
+
+
 ## Build Instructions
 ```bash
 # Clone the repository
